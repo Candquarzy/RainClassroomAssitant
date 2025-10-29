@@ -44,7 +44,7 @@ class Lesson:
 
     def answer_questions(self,problemid,problemtype,answer,limit):
         # 回答问题
-        if answer and problemtype != 3:
+        # if answer and problemtype != 3:
             wait_time = calculate_waittime(limit, self.config["answer_config"]["answer_delay"]["type"], self.config["answer_config"]["answer_delay"]["custom"]["time"])
             if wait_time != 0:
                 meg = "%s检测到问题，将在%s秒后自动回答，答案为%s" % (self.lessonname,wait_time,answer)
@@ -68,14 +68,14 @@ class Lesson:
                 self.add_message(meg,4)
                 # threading.Thread(target=say_something,args=(meg,)).start()
                 return False
-        else:
-            if limit == -1:
-                meg = "%s的问题没有找到答案，该题不限时，请尽快前往雨课堂回答" % (self.lessonname)
-            else:
-                meg = "%s的问题没有找到答案，请在%s秒内前往雨课堂回答" % (self.lessonname,limit)
-            # threading.Thread(target=say_something,args=(meg,)).start()
-            self.add_message(meg,4)
-            return False
+        # else:
+        #     if limit == -1:
+        #         meg = "%s的问题没有找到答案，该题不限时，请尽快前往雨课堂回答" % (self.lessonname)
+        #     else:
+        #         meg = "%s的问题没有找到答案，请在%s秒内前往雨课堂回答" % (self.lessonname,limit)
+        #     # threading.Thread(target=say_something,args=(meg,)).start()
+        #     self.add_message(meg,4)
+        #     return False
     
     def on_open(self, wsapp):
         self.handshark = {"op":"hello","userid":self.user_uid,"role":"student","auth":self.auth,"lessonid":self.lessonid}
@@ -176,7 +176,7 @@ class Lesson:
 
     def start_answer(self, problemid, limit):
         for promble in self.problems_ls:
-            if promble["problemId"] == problemid:
+            # if promble["problemId"] == problemid:
                 if promble["result"] is not None:
                     # 如果该题已经作答过，直接跳出函数以忽略该题
                     # 该情况理论上只会出现在启动监听时
@@ -190,13 +190,13 @@ class Lesson:
                     answers = promble.get("answers",[])
                 threading.Thread(target=self.answer_questions,args=(promble["problemId"],promble["problemType"],answers,limit)).start()
                 break
-        else:
-            if limit == -1:
-                meg = "%s的问题没有找到答案，该题不限时，请尽快前往雨课堂回答" % (self.lessonname)
-            else:
-                meg = "%s的问题没有找到答案，请在%s秒内前往雨课堂回答" % (self.lessonname,limit)
-            self.add_message(meg,4)
-            # threading.Thread(target=say_something,args=(meg,)).start()
+        # else:
+        #     if limit == -1:
+        #         meg = "%s的问题没有找到答案，该题不限时，请尽快前往雨课堂回答" % (self.lessonname)
+        #     else:
+        #         meg = "%s的问题没有找到答案，请在%s秒内前往雨课堂回答" % (self.lessonname,limit)
+        #     self.add_message(meg,4)
+        #     # threading.Thread(target=say_something,args=(meg,)).start()
 
     
     def _current_problem(self, wsapp, promblemid):
